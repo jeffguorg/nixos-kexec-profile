@@ -78,6 +78,9 @@ while [[ $# -gt 0 ]]; do
         -b|--boot)
             BOOT=y
             ;;
+        -*|--*)
+            fail "unrecognized option"
+            ;;
         *)
             if set-target "$opt"; then
                 :
@@ -137,5 +140,10 @@ fi
 run kexec -l --initrd=$INITRD --command-line="$CMDLINE" $KERNEL
 
 if [ $BOOT == y ]; then
-    run kexec -e
+    sync
+    if type systemctl &> /dev/null; then
+        systemctl kexec
+    else
+        run kexec -e
+    fi
 fi
