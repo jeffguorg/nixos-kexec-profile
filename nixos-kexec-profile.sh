@@ -117,13 +117,13 @@ if [ -z "$TARGET" ]; then
     fail "this is unreachable"
 fi
 
-LABEL="$(jq '."org.nixos.bootspec.v1".label' /nix/var/nix/profiles/system/boot.json -r)"
+LABEL="$(jq '."org.nixos.bootspec.v1".label' $TARGET/boot.json -r)"
 
-INITRD="$(jq '."org.nixos.bootspec.v1".initrd' /nix/var/nix/profiles/system/boot.json -r)"
-KERNEL="$(jq '."org.nixos.bootspec.v1".kernel' /nix/var/nix/profiles/system/boot.json -r)"
-INIT="$(jq '."org.nixos.bootspec.v1".init' /nix/var/nix/profiles/system/boot.json -r)"
+INITRD="$(jq '."org.nixos.bootspec.v1".initrd' $TARGET/boot.json -r)"
+KERNEL="$(jq '."org.nixos.bootspec.v1".kernel' $TARGET/boot.json -r)"
+INIT="$(jq '."org.nixos.bootspec.v1".init'     $TARGET/boot.json -r)"
 
-CMDLINE="init=${INIT} $(jq '."org.nixos.bootspec.v1".kernelParams | join(" ")' /nix/var/nix/profiles/system/boot.json -r)"
+CMDLINE="init=${INIT} $(jq '."org.nixos.bootspec.v1".kernelParams | join(" ")' $TARGET/boot.json -r)"
 
 msg "Loading:  $LABEL"
 msg "Toplevel: $TARGET"
